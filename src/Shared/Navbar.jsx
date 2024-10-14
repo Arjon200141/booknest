@@ -10,8 +10,8 @@ const Navbar = () => {
             <Link to="/">
                 <img src="https://i.ibb.co.com/6Bxgxqk/199943135.png" alt="" className="h-16 w-32 ml-8" />
             </Link>
-            <div className="">
-                <ul className="text-xl font-semibold flex justify-center gap-12">
+            <div className="flex ml-[-170px]">
+                <ul className="text-xl font-semibold flex gap-16 ">
                     {navlinks}
                 </ul>
             </div>
