@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { ImInfo } from "react-icons/im";
+import Swal from "sweetalert2";
 
 const Booklist = () => {
     const [books, setBooks] = useState([]);
@@ -47,10 +48,43 @@ const Booklist = () => {
         }
     }, []);
 
+    const setTowishlist = (book) => {
+        const books = localStorage.getItem("books");
+        if (!books) {
+            localStorage.setItem("books", JSON.stringify([book]))
+
+        }
+        else {
+
+            const newbooks = JSON.parse(books);
+            const exists = newbooks.find(bookr => bookr.id === book.id) !== undefined
+            if (exists) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "The book has been already in the wishlist"
+                });
+            }
+            else {
+                newbooks.push(book);
+                localStorage.setItem("books", JSON.stringify(newbooks))
+                console.log(JSON.parse(localStorage.getItem("books")));
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${book.title} has been added to the Wishlist`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+    }
+
     useEffect(() => {
         fetchBooks("https://gutendex.com/books");
         return () => abortControllerRef.current.abort();
     }, [fetchBooks]);
+
 
     useEffect(() => {
         const filtered = books.filter(book =>
@@ -64,7 +98,7 @@ const Booklist = () => {
     }, [searchQuery, selectedGenre, books]);
 
     return (
-        <div className="my-16">
+        <div className="my-8">
             <h1 className="text-4xl font-semibold text-center mb-8">Book List</h1>
 
             <div className="flex justify-center gap-4 mb-6">
@@ -75,7 +109,6 @@ const Booklist = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
-
 
                 <select
                     className="border px-4 py-2 rounded"
@@ -91,7 +124,7 @@ const Booklist = () => {
                 </select>
             </div>
 
-            {loading && <p>Loading...</p>}
+            {loading && <p className="text-3xl text-center font-semibold my-8">Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {!loading && !error && (
@@ -110,6 +143,7 @@ const Booklist = () => {
                             </tr>
                         </thead>
                         <tbody className="text-sm">
+
                             {filteredBooks.map((book) => (
                                 <tr key={book.id} className="even:bg-gray-50">
                                     <td className="border px-4 py-2">{book.id}</td>
@@ -128,7 +162,7 @@ const Booklist = () => {
                                         {book.subjects.join(", ") || "N/A"}
                                     </td>
                                     <td className="border px-4 py-2 text-center">
-                                        <button className="btn btn-ghost btn-xs">
+                                        <button className="btn btn-ghost btn-xs" onClick={() => setTowishlist(book)}>
                                             Add to Wishlist <span className="text-center flex justify-center"><FaRegHeart /></span>
                                         </button>
                                     </td>
