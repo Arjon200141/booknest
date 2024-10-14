@@ -1,29 +1,74 @@
 import { useState } from "react";
+import { ImInfo } from "react-icons/im";
+import { MdDeleteForever } from "react-icons/md";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Wishlist = () => {
-    const [wishlist,setWishlist]=useState(JSON.parse(localStorage.getItem("books")))
-    const removeFromWishlist=id =>{
-        const modwishlist= wishlist.filter(book=>book.id!==id)
-        localStorage.setItem("books",JSON.stringify(modwishlist))
+    const [wishlist, setWishlist] = useState(JSON.parse(localStorage.getItem("books")))
+    const removeFromWishlist = id => {
+        const modwishlist = wishlist.filter(book => book.id !== id)
+        localStorage.setItem("books", JSON.stringify(modwishlist))
         setWishlist(modwishlist);
-        alert("removed book successfully from wishlist")
-
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `The book has been removed from Wishlist!!`,
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 
     return (
         <div>
-            <p>{wishlist.length}</p>
-            {
-                wishlist.map((book) => (
-                    <div key={book.id}>
-                        <h3>Book ID: {book.id}</h3>
-                        <h4>Title: {book.title}</h4>
-                        <p>Authors: {book.authors.map((author) => author.name).join(", ")}</p>
-                        <button id={book.id} className="border-2" onClick={()=>removeFromWishlist(book.id)} >remove from wishlist</button>
-                    </div>
-                ))
-            }
-            
+            <p className="text-3xl my-5 text-center ">Books Added in the Wishlist : {wishlist.length}</p>
+            <div className="overflow-x-auto mb-12 mx-6">
+                <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+                    <thead>
+                        <tr className="bg-gray-100 text-lg">
+                            <th className="border px-1 py-2 text-center">Book Id</th>
+                            <th className="border px-4 py-2 text-center">Cover</th>
+                            <th className="border px-4 py-2 text-center">Book Title</th>
+                            <th className="border px-4 py-2 text-center">Authors</th>
+                            <th className="border px-4 py-2 text-center">Genre</th>
+                            <th className="border px-4 py-2 text-center col-span-2" colSpan={2}>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    {
+                        wishlist.map((book) => (
+                            <tr key={book.id} className="even:bg-gray-50 text-md  text-center">
+                                <td className="border px-4 py-2">{book.id}</td>
+                                <td className="border p-3">
+                                    <img
+                                        src={book.formats["image/jpeg"] || ""}
+                                        alt={book.title || "No Cover"}
+                                        className="h-16 w-14 object-cover"
+                                    />
+                                </td>
+                                <td className="border px-4 py-2">{book.title || "N/A"}</td>
+                                <td className="border px-4 py-2">
+                                    {book.authors.map((author) => author.name).join(", ") || "N/A"}
+                                </td>
+                                <td className="border px-4 py-2">
+                                    {book.subjects.join(", ") || "N/A"}
+                                </td>
+                                <td>
+                                    <button id={book.id} className=" px-4 py-2 text-center" onClick={() => removeFromWishlist(book.id)} ><span className="flex justify-center text-xl"><MdDeleteForever /></span>Remove</button>
+                                </td>
+                                <td className="border px-4 py-2 text-center">
+                                        <Link to={`/books/${book.id}`}>
+                                        <button className="text-md">
+                                            <span className="flex justify-center"><ImInfo /></span>  Details
+                                        </button>
+                                        </Link>   
+                                    </td>
+                            </tr>
+                        ))
+                    }
+                </table>
+            </div>
         </div>
     );
 };

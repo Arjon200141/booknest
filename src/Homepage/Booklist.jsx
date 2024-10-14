@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { ImInfo } from "react-icons/im";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Booklist = () => {
@@ -99,12 +100,11 @@ const Booklist = () => {
 
     return (
         <div className="my-8">
-            <h1 className="text-4xl font-semibold text-center mb-8">Book List</h1>
 
             <div className="flex justify-center gap-4 mb-6">
                 <input
                     type="text"
-                    placeholder="Search by title..."
+                    placeholder="Search books by title..."
                     className="border px-4 py-2 rounded w-1/3"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -128,10 +128,10 @@ const Booklist = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {!loading && !error && (
-                <div className="overflow-x-auto mx-6">
-                    <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+                <div className="overflow-x-auto  mx-6">
+                    <table className="table-auto border-collapse border border-gray-300 w-full text-center">
                         <thead>
-                            <tr className="bg-gray-100">
+                            <tr className="bg-gray-100 text-lg">
                                 <th className="border px-1 py-2 text-center">Book Id</th>
                                 <th className="border px-4 py-2 text-center">Cover</th>
                                 <th className="border px-4 py-2 text-center">Book Title</th>
@@ -142,7 +142,7 @@ const Booklist = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="text-sm">
+                        <tbody className="text-md">
 
                             {filteredBooks.map((book) => (
                                 <tr key={book.id} className="even:bg-gray-50">
@@ -167,9 +167,11 @@ const Booklist = () => {
                                         </button>
                                     </td>
                                     <td className="border px-4 py-2 text-center">
+                                        <Link to={`/books/${book.id}`}>
                                         <button className="text-md">
                                             <span className="flex justify-center"><ImInfo /></span>  Details
                                         </button>
+                                        </Link>   
                                     </td>
                                 </tr>
                             ))}
