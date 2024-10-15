@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { ImInfo } from "react-icons/im";
+import { PiGreaterThanLight, PiLessThanLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -8,8 +9,12 @@ const Booklist = () => {
     const [books, setBooks] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
     const [genres, setGenres] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedGenre, setSelectedGenre] = useState("");
+    const [searchQuery, setSearchQuery] = useState(
+        localStorage.getItem("searchQuery") || ""
+    );
+    const [selectedGenre, setSelectedGenre] = useState(
+        localStorage.getItem("selectedGenre") || ""
+    );
     const [nextPage, setNextPage] = useState(null);
     const [previousPage, setPreviousPage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -52,40 +57,43 @@ const Booklist = () => {
     const setTowishlist = (book) => {
         const books = localStorage.getItem("books");
         if (!books) {
-            localStorage.setItem("books", JSON.stringify([book]))
-
-        }
-        else {
-
-            const newbooks = JSON.parse(books);
-            const exists = newbooks.find(bookr => bookr.id === book.id) !== undefined
+            localStorage.setItem("books", JSON.stringify([book]));
+        } else {
+            const newBooks = JSON.parse(books);
+            const exists = newBooks.some(b => b.id === book.id);
             if (exists) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "The book has been already in the wishlist"
+                    text: "The book is already in the wishlist.",
                 });
-            }
-            else {
-                newbooks.push(book);
-                localStorage.setItem("books", JSON.stringify(newbooks))
-                console.log(JSON.parse(localStorage.getItem("books")));
+            } else {
+                newBooks.push(book);
+                localStorage.setItem("books", JSON.stringify(newBooks));
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `${book.title} has been added to the Wishlist`,
+                    title: `${book.title} has been added to the Wishlist.`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             }
         }
-    }
+    };
+
+    // Save searchQuery and selectedGenre to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem("searchQuery", searchQuery);
+    }, [searchQuery]);
+
+    useEffect(() => {
+        localStorage.setItem("selectedGenre", selectedGenre);
+    }, [selectedGenre]);
 
     useEffect(() => {
         fetchBooks("https://gutendex.com/books");
         return () => abortControllerRef.current.abort();
     }, [fetchBooks]);
-
 
     useEffect(() => {
         const filtered = books.filter(book =>
@@ -100,7 +108,6 @@ const Booklist = () => {
 
     return (
         <div className="my-8">
-
             <div className="flex justify-center gap-4 mb-6">
                 <input
                     type="text"
@@ -124,26 +131,23 @@ const Booklist = () => {
                 </select>
             </div>
 
-            {loading && <p className="text-3xl text-center font-semibold my-8">Loading...</p>}
+            {loading && <p className="text-5xl text-center font-semibold my-8">Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {!loading && !error && (
-                <div className="overflow-x-auto  mx-6">
+                <div className="overflow-x-auto mx-6">
                     <table className="table-auto border-collapse border border-gray-300 w-full text-center">
                         <thead>
                             <tr className="bg-gray-100 text-lg">
-                                <th className="border px-1 py-2 text-center">Book Id</th>
-                                <th className="border px-4 py-2 text-center">Cover</th>
-                                <th className="border px-4 py-2 text-center">Book Title</th>
-                                <th className="border px-4 py-2 text-center">Authors</th>
-                                <th className="border px-4 py-2 text-center">Genre</th>
-                                <th className="border px-4 py-2 text-center col-span-2" colSpan={2}>
-                                    Actions
-                                </th>
+                                <th className="border px-1 py-2">Book Id</th>
+                                <th className="border px-4 py-2">Cover</th>
+                                <th className="border px-4 py-2">Book Title</th>
+                                <th className="border px-4 py-2">Authors</th>
+                                <th className="border px-4 py-2">Genre</th>
+                                <th className="border px-4 py-2" colSpan={2}>Actions</th>
                             </tr>
                         </thead>
                         <tbody className="text-md">
-
                             {filteredBooks.map((book) => (
                                 <tr key={book.id} className="even:bg-gray-50">
                                     <td className="border px-4 py-2">{book.id}</td>
@@ -161,17 +165,19 @@ const Booklist = () => {
                                     <td className="border px-4 py-2">
                                         {book.subjects.join(", ") || "N/A"}
                                     </td>
-                                    <td className="border px-4 py-2 text-center">
-                                        <button className="btn btn-ghost btn-xs" onClick={() => setTowishlist(book)}>
-                                            Add to Wishlist <span className="text-center flex justify-center"><FaRegHeart /></span>
-                                        </button>
-                                    </td>
-                                    <td className="border px-4 py-2 text-center">
+                                    <td className="border px-4 py-2">
                                         <Link to={`/books/${book.id}`}>
-                                        <button className="text-md">
-                                            <span className="flex justify-center"><ImInfo /></span>  Details
-                                        </button>
-                                        </Link>   
+                                            <button className=" font-semibold" onClick={() => setTowishlist(book)}>
+                                                Add to Wishlist <span className="text-center flex justify-center"><FaRegHeart /></span>
+                                            </button>
+                                        </Link>
+                                    </td>
+                                    <td className="border px-4 py-2">
+                                        <Link to={`/books/${book.id}`}>
+                                            <button className="text-md font-semibold">
+                                                <span className="text-center flex justify-center"><ImInfo /></span> Details
+                                            </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -182,19 +188,18 @@ const Booklist = () => {
 
             <div className="flex gap-4 justify-center my-8">
                 <button
-                    className="bg-gray-50 rounded-md px-6 py-2 text-black font-semibold text-xl"
+                    className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
                     onClick={() => fetchBooks(previousPage)}
                     disabled={!previousPage || loading}
                 >
-                    Previous Page
+                    <PiLessThanLight /> Previous Page
                 </button>
-
                 <button
-                    className="bg-gray-50 rounded-md px-6 py-2 text-black font-semibold text-xl"
+                    className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
                     onClick={() => fetchBooks(nextPage)}
                     disabled={!nextPage || loading}
                 >
-                    Next Page
+                    Next Page <PiGreaterThanLight />
                 </button>
             </div>
         </div>
