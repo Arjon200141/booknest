@@ -25,7 +25,6 @@ const Booklist = () => {
     const fetchBooks = useCallback(async (url) => {
         setLoading(true);
         setError(null);
-
         try {
             abortControllerRef.current.abort();
             abortControllerRef.current = new AbortController();
@@ -81,7 +80,6 @@ const Booklist = () => {
         }
     };
 
-    // Save searchQuery and selectedGenre to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem("searchQuery", searchQuery);
     }, [searchQuery]);
