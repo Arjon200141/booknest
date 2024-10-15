@@ -151,8 +151,10 @@ const Booklist = () => {
                             {filteredBooks.map((book) => (
                                 <tr key={book.id} className="even:bg-gray-50">
                                     <td className="border px-4 py-2">{book.id}</td>
-                                    <td className="border p-3">
-                                        <img
+                                    <td className="border p-3" >
+                                        <img data-aos="flip-left"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="1000"
                                             src={book.formats["image/jpeg"] || ""}
                                             alt={book.title || "No Cover"}
                                             className="h-16 w-14 object-cover"

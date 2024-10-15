@@ -1,8 +1,11 @@
-import { useState} from "react";
+import { useState } from "react";
 import { ImInfo } from "react-icons/im";
 import { MdDeleteForever } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init();
 
 const Wishlist = () => {
     const [wishlist, setWishlist] = useState(() => {
@@ -26,7 +29,7 @@ const Wishlist = () => {
 
     return (
         <div>
-            <p className="text-3xl my-5 text-center font-semibold">
+            <p className="text-3xl my-8 text-center font-semibold">
                 Books Added in the Wishlist: {wishlist.length}
             </p>
             <div className="overflow-x-auto mb-12 mx-6">
@@ -49,7 +52,9 @@ const Wishlist = () => {
                                 <tr key={book.id} className="even:bg-gray-50 text-md text-center">
                                     <td className="border px-4 py-2">{book.id}</td>
                                     <td className="border p-3">
-                                        <img
+                                        <img data-aos="flip-left"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="1000"
                                             src={book.formats?.["image/jpeg"] || ""}
                                             alt={book.title || "No Cover"}
                                             className="h-16 w-14 object-cover"
@@ -76,9 +81,9 @@ const Wishlist = () => {
                                             Remove
                                         </button>
                                     </td>
-                                    <td className="border px-4 py-2 text-center">
+                                    <td className="border  px-4 py-2 text-center">
                                         <Link to={`/books/${book.id}`}>
-                                            <button className="text-md font-semibold">
+                                            <button  className="text-md font-semibold">
                                                 <span className="flex justify-center">
                                                     <ImInfo />
                                                 </span>
