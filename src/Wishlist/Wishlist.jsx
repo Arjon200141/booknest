@@ -35,7 +35,7 @@ const Wishlist = () => {
             <div className="md:overflow-x-auto md:mb-12 md:mx-6">
                 <table className="md:w-auto md:table-auto md:border-collapse border border-gray-300 md:text-left">
                     <thead>
-                        <tr className="bg-gray-100 md:text-lg">
+                        <tr className="bg-gray-100 text-sm md:text-lg">
                             <th className="border md:px-1 py-2 md:text-center">Book Id</th>
                             <th className="border md:px-4 py-2 md:text-center">Cover</th>
                             <th className="border md:px-4 py-2 md:text-center">Book Title</th>

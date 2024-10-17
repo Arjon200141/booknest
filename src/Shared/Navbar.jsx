@@ -1,23 +1,59 @@
 import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { IoMenuSharp } from "react-icons/io5";
 
 const Navbar = () => {
-    const navlinks = <>
-        <NavLink to="/"><li>Home</li></NavLink>
-        <NavLink to="/wishlist"><li>Wishlist</li></NavLink>
-    </>
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const navlinks = (
+        <>
+            <NavLink to="/" className="hover:text-blue-600">
+                <li>Home</li>
+            </NavLink>
+            <NavLink to="/wishlist" className="hover:text-blue-600">
+                <li>Wishlist</li>
+            </NavLink>
+        </>
+    );
+
     return (
-        <div className="flex items-center justify-between bg-slate-50">
-            <Link to="/">
-                <img src="https://i.ibb.co.com/6Bxgxqk/199943135.png" alt="" className="h-16 w-32 ml-8" />
-            </Link>
-            <div className="flex ml-[-170px]">
-                <ul className="text-xl font-semibold flex gap-16 ">
+        <div className="w-full bg-slate-50">
+            <div className="flex items-center justify-between px-8 py-4">
+                <Link to="/">
+                    <img
+                        src="https://i.ibb.co/6Bxgxqk/199943135.png"
+                        alt="Logo"
+                        className="h-16 w-32"
+                    />
+                </Link>
+
+                {/* Desktop Menu */}
+                <ul className="hidden md:flex text-xl font-semibold gap-12">
                     {navlinks}
                 </ul>
-            </div>
-            <div>
+                <div>
 
+                </div>
+
+                {/* Mobile Menu Toggle Button */}
+                <button
+                    onClick={toggleMenu}
+                    className="md:hidden text-2xl focus:outline-none"
+                >
+                <IoMenuSharp />
+                </button>
             </div>
+
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                <div className="md:hidden">
+                    <ul className="flex flex-col items-center gap-6 text-xl font-semibold py-4">
+                        {navlinks}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 };

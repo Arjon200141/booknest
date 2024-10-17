@@ -132,18 +132,18 @@ const Booklist = () => {
     }, [searchQuery, selectedGenre, books]);
 
     return (
-        <div className="my-8">
-            <div className="flex justify-center gap-4 mb-6">
+        <div className="my-4 md:my-8">
+            <div className="md:flex justify-center gap-4 mx-24 mb-6">
                 <input
                     type="text"
                     placeholder="Search books by title..."
-                    className="border px-4 py-2 rounded w-1/3"
+                    className="border mb-4 md:mb-0 px-4 py-2 rounded md:w-auto"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
                 <select
-                    className="border px-4 py-2 rounded"
+                    className="border md:px-4 py-2 rounded flex justify-center w-1/2 md:w-auto"
                     value={selectedGenre}
                     onChange={(e) => setSelectedGenre(e.target.value)}
                 >
@@ -156,50 +156,50 @@ const Booklist = () => {
                 </select>
             </div>
 
-            {loading && <p className="text-5xl text-center font-semibold my-8">Loading...</p>}
+            {loading && <p className="md:text-5xl text-center font-semibold my-8">Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {!loading && !error && (
-                <div className="overflow-x-auto mx-6">
-                    <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+                <div className="md:overflow-x-auto md:mx-6">
+                    <table className="md:w-full md:table-auto md:border-collapse border border-gray-300 md:text-left">
                         <thead>
-                            <tr className="bg-gray-100 text-lg">
-                                <th className="border px-1 py-2">Book Id</th>
-                                <th className="border px-4 py-2">Cover</th>
-                                <th className="border px-4 py-2">Book Title</th>
-                                <th className="border px-4 py-2">Authors</th>
-                                <th className="border px-4 py-2">Genre</th>
-                                <th className="border px-4 py-2" colSpan={2}>Actions</th>
+                            <tr className="bg-gray-100 md:text-lg">
+                                <th className="border md:px-1 md:py-2">Book Id</th>
+                                <th className="border md:px-4 md:py-2">Cover</th>
+                                <th className="border md:px-4 md:py-2">Book Title</th>
+                                <th className="border md:px-4 md:py-2">Authors</th>
+                                <th className="border md:px-4 md:py-2">Genre</th>
+                                <th className="border md:px-4 md:py-2" colSpan={2}>Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="text-md">
+                        <tbody className="md:text-md">
                             {filteredBooks.map((book) => {
                                 const isInWishlist = wishlist.some(item => item.id === book.id);
                                 return (
                                     <tr key={book.id} className="even:bg-gray-50" >
-                                        <td className="border px-4 py-2">{book.id}</td>
-                                        <td className="border p-3">
+                                        <td className="border md:px-4 md:py-2">{book.id}</td>
+                                        <td className="border md:p-3">
                                             <img
                                                 src={book.formats["image/jpeg"] || ""}
                                                 alt={book.title || "No Cover"}
-                                                className="h-16 w-14 object-cover"
+                                                className="md:h-16 md:w-14 object-cover"
                                             />
                                         </td>
-                                        <td className="border px-4 py-2">{book.title || "N/A"}</td>
-                                        <td className="border px-4 py-2">
+                                        <td className="border md:px-4 md:py-2">{book.title || "N/A"}</td>
+                                        <td className="border md:px-4 md:py-2">
                                             {book.authors.map((author) => author.name).join(", ") || "N/A"}
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="border md:px-4 py-2">
                                             {book.subjects.join(", ") || "N/A"}
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="border md:px-4 py-2">
                                             <Link to={'/'}>
                                                 <button className=" font-semibold" onClick={() => { isInWishlist ? removeFromWishlist(book.id) : setTowishlist(book) }}>
                                                     {isInWishlist ? "In Wishlist" : "Add to Wishlist"} <span className="text-center flex justify-center">{isInWishlist ? <FcLike /> : <FaRegHeart />}</span>
                                                 </button>
                                             </Link>
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="border md:px-4 md:py-2">
                                             <Link to={`/books/${book.id}`}>
                                                 <button className="text-md font-semibold">
                                                     <span className="text-center flex justify-center"><ImInfo /></span> Details
