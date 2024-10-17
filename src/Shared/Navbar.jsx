@@ -34,7 +34,7 @@ const Navbar = () => {
 
     return (
         <div className="w-full bg-slate-50">
-            <div className="flex items-center justify-between px-8 py-4">
+            <div className="flex items-center justify-between px-8 py-1">
                 <Link to="/">
                     <img
                         src="https://i.ibb.co/6Bxgxqk/199943135.png"

@@ -174,9 +174,9 @@ const Booklist = () => {
                         </thead>
                         <tbody className="md:text-md">
                             {filteredBooks.map((book) => {
-                                const isInWishlist = wishlist.some(item => item.id === book.id);
+                                const isInWishlist = wishlist?.some(item => item.id === book.id);
                                 return (
-                                    <tr key={book.id} className="even:bg-gray-50" >
+                                    <tr key={book.id} className="even:bg-gray-50">
                                         <td className="border md:px-4 md:py-2">{book.id}</td>
                                         <td className="border md:p-3">
                                             <img
@@ -195,7 +195,7 @@ const Booklist = () => {
                                         <td className="border md:px-4 py-2">
                                             <Link to={'/'}>
                                                 <button className=" font-semibold" onClick={() => { isInWishlist ? removeFromWishlist(book.id) : setTowishlist(book) }}>
-                                                    {isInWishlist ? "In Wishlist" : "Add to Wishlist"} <span className="text-center flex justify-center">{isInWishlist ? <FcLike /> : <FaRegHeart />}</span>
+                                                    {isInWishlist ? "In Wishlist" : "Add to Wishlist"} <span className="text-center text-xl flex justify-center">{isInWishlist ? <FcLike /> : <FaRegHeart />}</span>
                                                 </button>
                                             </Link>
                                         </td>
@@ -205,32 +205,32 @@ const Booklist = () => {
                                                     <span className="text-center flex justify-center"><ImInfo /></span> Details
                                                 </button>
                                             </Link>
-                                    </td>
+                                        </td>
                                     </tr>
-                        )
+                                )
                             })}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
                 </div>
-    )
-}
+            )
+            }
 
-<div className="flex gap-4 justify-center my-8">
-    <button
-        className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
-        onClick={() => fetchBooks(previousPage)}
-        disabled={!previousPage || loading}
-    >
-        <PiLessThanLight /> Previous Page
-    </button>
-    <button
-        className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
-        onClick={() => fetchBooks(nextPage)}
-        disabled={!nextPage || loading}
-    >
-        Next Page <PiGreaterThanLight />
-    </button>
-</div>
+            <div className="flex gap-4 justify-center my-8">
+                <button
+                    className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
+                    onClick={() => fetchBooks(previousPage)}
+                    disabled={!previousPage || loading}
+                >
+                    <PiLessThanLight /> Previous Page
+                </button>
+                <button
+                    className="bg-gray-100 flex items-center gap-2 rounded-md px-6 py-2 text-xl font-semibold"
+                    onClick={() => fetchBooks(nextPage)}
+                    disabled={!nextPage || loading}
+                >
+                    Next Page <PiGreaterThanLight />
+                </button>
+            </div>
         </div >
     );
 };

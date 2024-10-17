@@ -32,7 +32,7 @@ const Wishlist = () => {
             <p className="md:text-4xl my-6 md:my-10 text-center md:font-semibold">
                 Books Added in the Wishlist: {wishlist.length}
             </p>
-            <div className="md:overflow-x-auto md:mb-12 md:mx-6">
+            <div className="flex justify-center md:overflow-x-auto md:mb-12 md:mx-6">
                 <table className="md:w-auto md:table-auto md:border-collapse border border-gray-300 md:text-left">
                     <thead>
                         <tr className="bg-gray-100 text-sm md:text-lg">
