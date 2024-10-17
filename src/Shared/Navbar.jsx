@@ -9,10 +9,24 @@ const Navbar = () => {
 
     const navlinks = (
         <>
-            <NavLink to="/" className="hover:text-blue-600">
+            <NavLink 
+                to="/" 
+                className={({ isActive }) =>
+                    isActive
+                        ? "hover:text-blue-500 underline"
+                        : "hover:text-blue-500"
+                }
+            >
                 <li>Home</li>
             </NavLink>
-            <NavLink to="/wishlist" className="hover:text-blue-600">
+            <NavLink 
+                to="/wishlist" 
+                className={({ isActive }) =>
+                    isActive
+                        ? "hover:text-blue-500 underline"
+                        : "hover:text-blue-500"
+                }
+            >
                 <li>Wishlist</li>
             </NavLink>
         </>

@@ -52,11 +52,11 @@ const BookDetails = () => {
     };
 
     return (
-        <div className="flex justify-between gap-6 mx-36 my-12">
-            <div className="flex-1">
+        <div className="flex flex-col md:flex-row justify-between gap-6 md:mx-36 my-12">
+            <div className="flex-1  flex justify-center">
                 <img data-aos="flip-right"
-     data-aos-easing="ease-out-cubic"
-     data-aos-duration="2000"
+                    data-aos-easing="ease-out-cubic"
+                    data-aos-duration="2000"
                     src={book.formats["image/jpeg"]}
                     alt=""
                     className="h-full"
